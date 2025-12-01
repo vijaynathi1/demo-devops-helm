@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: aws-devops-poc
 spec:
-  replicas: 2
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: aws-devops-poc
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: aws-devops-poc
     spec:
       containers:
-      - name: web
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: 5000
-        env:
-        - name: DB_HOST
-          value: "{{ .Values.mysql.host }}"
-        - name: DB_USER
-          value: "{{ .Values.mysql.user }}"
-        - name: DB_PASS
-          value: "{{ .Values.mysql.password }}"
+        - name: aws-devops-poc
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.containerPort }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
