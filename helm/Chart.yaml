@@ -1,0 +1,5 @@
+apiVersion: v2
+name: aws-devops-poc
+description: A demo chart for AWS DevOps POC
+version: 0.1.0
+appVersion: "1.0.0"
